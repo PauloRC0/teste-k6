@@ -36,8 +36,8 @@ Siga os passos abaixo para clonar o repositório, preparar o ambiente e rodar os
 ### 1. Clonar o Repositório
 Abra o seu terminal e execute:
 ```bash
-git clone [https://github.com/PauloRC0/teste-k6.git](https://github.com/SEU-USUARIO/TESTE-K6.git)
-cd TESTE-K6
+git clone https://github.com/PauloRC0/teste-k6.git
+cd teste-k6
 
 ```
 
