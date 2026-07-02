@@ -1,13 +1,13 @@
 ```markdown
 # Atividade Prática: Descobrindo o Limite de uma API com k6
 
-[cite_start]Este repositório contém uma atividade prática complementar criada para testar o desempenho, carga e estresse de uma API local utilizando o **k6**[cite: 2, 4]. [cite_start]O objetivo é descobrir, na prática, até quantos usuários simultâneos (`vus`) a API aguenta antes de deixar de cumprir um requisito de desempenho — subindo a carga, rodada por rodada, até o teste falhar[cite: 7].
+Este repositório contém uma atividade prática complementar criada para testar o desempenho, carga e estresse de uma API local utilizando o **k6**. O objetivo é descobrir, na prática, até quantos usuários simultâneos (`vus`) a API aguenta antes de deixar de cumprir um requisito de desempenho — subindo a carga, rodada por rodada, até o teste falhar.
 
 ## 🚀 Sobre a API
 
-[cite_start]A API foi desenvolvida em **Node.js + Express + better-sqlite3** e roda localmente[cite: 9]. 
-* [cite_start]O endpoint testado é o `/report`, que realiza uma agregação pesada (`GROUP BY`, `COUNT`, `AVG`, `SUM`) em 10.000 registros — pesado o bastante para ter um limite real e alcançável em segundos[cite: 10].
-* [cite_start]**Ponto-chave (Causa raiz):** O `better-sqlite3` é síncrono, o que significa que cada consulta bloqueia o *event loop* do Node enquanto executa[cite: 11, 45]. [cite_start]Sob carga concorrente, as requisições enfileiram em vez de rodar em paralelo, gerando a degradação progressiva e o limite que serão encontrados[cite: 12, 45].
+A API foi desenvolvida em **Node.js + Express + better-sqlite3** e roda localmente. 
+* O endpoint testado é o `/report`, que realiza uma agregação pesada (`GROUP BY`, `COUNT`, `AVG`, `SUM`) em 10.000 registros — pesado o bastante para ter um limite real e alcançável em segundos.
+* **Ponto-chave (Causa raiz):** O `better-sqlite3` é síncrono, o que significa que cada consulta bloqueia o *event loop* do Node enquanto executa. Sob carga concorrente, as requisições enfileiram em vez de rodar em paralelo, gerando a degradação progressiva e o limite que serão encontrados.
 
 ---
 
@@ -16,7 +16,7 @@
 Antes de começar, certifique-se de ter instalado em sua máquina:
 * [Node.js](https://nodejs.org/) (versão 18 ou superior recomendada)
 * [k6](https://k6.io/docs/get-started/installation/) instalado globalmente no seu sistema operacional.
-* [cite_start]Experiência prévia em testes manuais de APIs com Postman[cite: 5].
+* Experiência prévia em testes manuais de APIs com Postman.
 
 ---
 
@@ -45,8 +45,6 @@ node seed.js
 
 ```
 
-(Comandos correspondentes às instruções do projeto )
-
 ### 3. Iniciar o Servidor da API
 
 Inicie a aplicação local:
@@ -59,8 +57,6 @@ npm start
 Aguarde a mensagem **"API iniciada"** aparecer no terminal do servidor antes de rodar qualquer teste. Ela estará rodando em `http://localhost:3001`.
 
 > ⚠️ **Importante:** Mantenha este terminal aberto e rodando durante todo o teste. Abra um **segundo terminal** para executar os comandos do k6.
-> 
-> 
 
 ---
 
@@ -68,24 +64,15 @@ Aguarde a mensagem **"API iniciada"** aparecer no terminal do servidor antes de 
 
 O script de teste está localizado em `teste/report-breakpoint-test.js` e possui regras rígidas (*thresholds*) de sucesso:
 
-* 
-`http_req_duration`: 95% das requisições devem responder em menos de 500ms (`p(95)<500`).
-
-
-* 
-`http_req_failed`: Zero falhas de requisição (`rate==0`).
-
-
-* 
-`checks`: 100% das checagens devem passar (`rate==1.0`).
-
-
+* `http_req_duration`: 95% das requisições devem responder em menos de 500ms (`p(95)<500`).
+* `http_req_failed`: Zero falhas de requisição (`rate==0`).
+* `checks`: 100% das checagens devem passar (`rate==1.0`).
 
 Se algum critério quebrar, a falha aparecerá claramente na tela com um `✗`.
 
-Passo a Passo: Subindo a carga até quebrar 
+### Passo a Passo: Subindo a carga até quebrar
 
-Rode as rodadas sequencialmente. Para cada rodada, abra o arquivo `teste/report-breakpoint-test.js`, altere o valor do `target` nas duas linhas de *stages* , salve o arquivo e execute o comando correspondente no terminal:
+Rode as rodadas sequencialmente. Para cada rodada, abra o arquivo `teste/report-breakpoint-test.js`, altere o valor do `target` nas duas linhas de *stages*, salve o arquivo e execute o comando correspondente no terminal:
 
 ```javascript
 export const options = {
@@ -106,20 +93,12 @@ export const options = {
 | **4** | `600` | `k6 run teste/report-breakpoint-test.js` |
 
 > 💡 **Nota:** Não é necessário reiniciar a API entre as rodadas — apenas espere uma terminar antes de começar a próxima.
-> 
-> 
 
 ### 📝 O que analisar e anotar em cada rodada?
 
 1. Os thresholds ficaram `✓` (verde) ou `✗` (vermelho)?
-
-
 2. Qual threshold quebrou primeiro: `http_req_duration`, `http_req_failed` ou `checks`?
-
-
 3. Qual foi o `p(95)` de `http_req_duration` exibido na saída do terminal?
-
-
 
 **Pare assim que encontrar a primeira rodada com `✗**`. Esse é o intervalo onde está o limite da API.
 
@@ -136,14 +115,8 @@ Se todos os VUs fossem abertos no mesmo instante, o sistema operacional poderia 
 Ao finalizar os testes, você deve conseguir responder:
 
 1. Em qual faixa de VUs a API começou a falhar?
-
-
 2. O `http_req_duration` (p95) subiu de forma gradual entre as rodadas ou "explodiu" de uma hora para outra?
-
-
 3. O número foi parecido em comparação com computadores de configurações diferentes?
-
-
 
 ```
 
