@@ -1,4 +1,3 @@
-```markdown
 # Atividade Prática: Descobrindo o Limite de uma API com k6
 
 Este repositório contém uma atividade prática complementar criada para testar o desempenho, carga e estresse de uma API local utilizando o **k6**. O objetivo é descobrir, na prática, até quantos usuários simultâneos (`vus`) a API aguenta antes de deixar de cumprir um requisito de desempenho — ajustando a carga, rodada por rodada, até o teste passar.
@@ -16,9 +15,10 @@ A API foi desenvolvida em **Node.js + Express + better-sqlite3** e roda localmen
 Antes de começar, certifique-se de ter instalado em sua máquina:
 * [Node.js](https://nodejs.org/) (versão 18 ou superior recomendada)
 * [k6](https://k6.io/docs/get-started/installation/) instalado globalmente no seu sistema operacional.
+
 ```bash
 # Instalar o k6
-```bash
+
 curl -fsSL https://dl.k6.io/key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/k6-archive-keyring.gpg
 echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
 sudo apt-get update
