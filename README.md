@@ -117,7 +117,3 @@ Ao finalizar os testes, você deve conseguir responder:
 1. Em qual faixa de VUs a API começou a falhar?
 2. O `http_req_duration` (p95) subiu de forma gradual entre as rodadas ou "explodiu" de uma hora para outra?
 3. O número foi parecido em comparação com computadores de configurações diferentes?
-
-```
-
-```
