@@ -1,7 +1,7 @@
 ```markdown
 # Atividade Prática: Descobrindo o Limite de uma API com k6
 
-Este repositório contém uma atividade prática complementar criada para testar o desempenho, carga e estresse de uma API local utilizando o **k6**. O objetivo é descobrir, na prática, até quantos usuários simultâneos (`vus`) a API aguenta antes de deixar de cumprir um requisito de desempenho — subindo a carga, rodada por rodada, até o teste falhar.
+Este repositório contém uma atividade prática complementar criada para testar o desempenho, carga e estresse de uma API local utilizando o **k6**. O objetivo é descobrir, na prática, até quantos usuários simultâneos (`vus`) a API aguenta antes de deixar de cumprir um requisito de desempenho — ajustando a carga, rodada por rodada, até o teste passar.
 
 ## 🚀 Sobre a API
 
@@ -85,8 +85,8 @@ Rode as rodadas sequencialmente. Para cada rodada, abra o arquivo `teste/report-
 ```javascript
 export const options = {
     stages: [
-        { duration: '5s', target: 150 },  // Altere aqui o valor do target
-        { duration: '25s', target: 150 }, // E altere aqui também
+        { duration: '5s', target: 450 },  // Altere aqui o valor do target
+        { duration: '25s', target: 450 }, // E altere aqui também
     ],
     // ... restante do script
 };
@@ -95,10 +95,11 @@ export const options = {
 
 | Rodada | Altere o `target` para | Comando para executar |
 | --- | --- | --- |
-| **1** | `150` | `k6 run teste/report-breakpoint-test.js` |
+| **1** | `450` | `k6 run teste/report-breakpoint-test.js` |
 | **2** | `300` | `k6 run teste/report-breakpoint-test.js` |
-| **3** | `450` | `k6 run teste/report-breakpoint-test.js` |
-| **4** | `600` | `k6 run teste/report-breakpoint-test.js` |
+| **3** | `200` | `k6 run teste/report-breakpoint-test.js` |
+| **4** | `100` | `k6 run teste/report-breakpoint-test.js` |
+Você tambêm pode testar com outros valores
 
 > 💡 **Nota:** Não é necessário reiniciar a API entre as rodadas — apenas espere uma terminar antes de começar a próxima.
 
@@ -110,18 +111,4 @@ export const options = {
 
 **Pare assim que encontrar a primeira rodada com `✗**`. Esse é o intervalo onde está o limite da API.
 
----
 
-## 💡 Por que a carga sobe em rampa (*stages*) e não com VUs fixos?
-
-Se todos os VUs fossem abertos no mesmo instante, o sistema operacional poderia recusar parte das conexões por causa de uma rajada abrupta de tentativas simultâneas. Isso geraria erros de *connection refused* que não têm relação com a API, mas que podem ser confundidos com "ela quebrou". A rampa de 5s evita esse ruído e garante que qualquer falha encontrada seja da capacidade real da API.
-
----
-
-## 🏁 Análise Final
-
-Ao finalizar os testes, você deve conseguir responder:
-
-1. Em qual faixa de VUs a API começou a falhar?
-2. O `http_req_duration` (p95) subiu de forma gradual entre as rodadas ou "explodiu" de uma hora para outra?
-3. O número foi parecido em comparação com computadores de configurações diferentes?
