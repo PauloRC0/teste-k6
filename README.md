@@ -16,6 +16,14 @@ A API foi desenvolvida em **Node.js + Express + better-sqlite3** e roda localmen
 Antes de começar, certifique-se de ter instalado em sua máquina:
 * [Node.js](https://nodejs.org/) (versão 18 ou superior recomendada)
 * [k6](https://k6.io/docs/get-started/installation/) instalado globalmente no seu sistema operacional.
+```bash
+# Instalar o k6
+curl -fsSL https://dl.k6.io/key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/k6-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+sudo apt-get update
+sudo apt-get install k6
+
+```
 * Experiência prévia em testes manuais de APIs com Postman.
 
 ---
