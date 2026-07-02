@@ -110,6 +110,5 @@ Você tambêm pode testar com outros valores
 2. Qual threshold quebrou primeiro: `http_req_duration`, `http_req_failed` ou `checks`?
 3. Qual foi o `p(95)` de `http_req_duration` exibido na saída do terminal?
 
-**Pare assim que encontrar a primeira rodada com `✗**`. Esse é o intervalo onde está o limite da API.
 
 
